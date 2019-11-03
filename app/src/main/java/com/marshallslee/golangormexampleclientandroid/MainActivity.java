@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                     if(response.isSuccessful()) {
-                        
+
                     } else {
                         Log.e(TAG, "Response is not successful.");
                     }
