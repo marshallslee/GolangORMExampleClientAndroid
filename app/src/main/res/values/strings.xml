@@ -1,3 +1,47 @@
 <resources>
     <string name="app_name">GolangORMExampleClientAndroid</string>
+    <string name="first_name">First Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="student_number">Student Number</string>
+    <string name="gender">Gender</string>
+    <string-array name="gender">
+        <item>M</item>
+        <item>F</item>
+    </string-array>
+    <string name="major">Major</string>
+    <string-array name="major">
+        <item>Aerospace Engineering</item>
+        <item>Anthropology</item>
+        <item>Archaeology</item>
+        <item>Arabic Language</item>
+        <item>Architectural Engineering</item>
+        <item>Astronomy</item>
+        <item>Biology</item>
+        <item>Botany</item>
+        <item>Chemical Engineering</item>
+        <item>Chemistry</item>
+        <item>Chinese Language</item>
+        <item>Computer Science</item>
+        <item>Earth Science</item>
+        <item>Economics</item>
+        <item>Education</item>
+        <item>Electronic Engineering</item>
+        <item>English Language</item>
+        <item>French Language</item>
+        <item>German Language</item>
+        <item>Italian Language</item>
+        <item>Japanese Language</item>
+        <item>Materials Engineering</item>
+        <item>Mathematics</item>
+        <item>Mechanical Engineering</item>
+        <item>Persian Language</item>
+        <item>Philosophy</item>
+        <item>Physics</item>
+        <item>Political Science</item>
+        <item>Portuguese Language</item>
+        <item>Russian Language</item>
+        <item>Spanish Language</item>
+    </string-array>
+    <string name="register">Register</string>
 </resources>
