@@ -3,6 +3,7 @@ package com.marshallslee.golangormexampleclientandroid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -72,15 +73,23 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         rvStudents = findViewById(R.id.rvStudents);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         DividerItemDecoration decoration = new DividerItemDecoration(rvStudents.getContext(), layoutManager.getOrientation());
-        decoration.setDrawable(getResources().getDrawable(R.drawable.custom_divideritemdecoration));
+        decoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.custom_divideritemdecoration));
         rvStudents.addItemDecoration(decoration);
         rvStudents.setLayoutManager(layoutManager);
         rvStudents.setItemAnimator(new DefaultItemAnimator());
 
+        studentListAdapter = new StudentListAdapter(students, this);
+        studentListAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        });
+
         tvGender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showGenderDialog();
             }
         });
 
@@ -114,17 +123,42 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     return;
                 }
 
+                if(studentNumber.length() != 9) {
+                    // student number must be exactly 9 characters long.
+                    Toast.makeText(MainActivity.this, getText(R.string.err_student_number_must_be_9_characters_long), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Student student = new Student(firstName, middleName, lastName, studentNumber, gender, major);
                 new RegisterTask().execute(student);
             }
         });
     }
 
+    private void showGenderDialog() {
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice);
+        String[] genders = getResources().getStringArray(R.array.gender);
+        for(String gender : genders) {
+            arrayAdapter.add(gender);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.gender));
+        builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String selectedGender = arrayAdapter.getItem(i);
+                tvGender.setText(selectedGender);
+            }
+        });
+        builder.show();
+    }
+
     private void showMajorListDialog() {
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice);
         String[] majors = getResources().getStringArray(R.array.major);
-        for (String s : majors) {
-            arrayAdapter.add(s);
+        for (String major : majors) {
+            arrayAdapter.add(major);
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -154,8 +188,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     protected void onResume() {
         super.onResume();
 
-        // student list will be refreshed onResume.
-        rvStudents.removeAllViewsInLayout();
+        students.clear();
+        studentListAdapter.notifyDataSetChanged();
         new LoadStudentsTask().execute();
     }
 
@@ -197,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                                             Student student = new Student(firstName, middleName, lastName, studentNumber, null, null);
                                             students.add(student);
                                         }
-                                        listStudents(students);
+                                        listStudents();
                                     }
                                     break;
 
@@ -223,8 +257,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         }
     }
 
-    private void listStudents(ArrayList<Student> students) {
-        studentListAdapter = new StudentListAdapter(students, this);
+    private void listStudents() {
         studentListAdapter.setOnItemClickListener(this);
         rvStudents.setAdapter(studentListAdapter);
         studentListAdapter.notifyDataSetChanged();
@@ -251,6 +284,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     Log.e(TAG, "Failure on RegisterTask: " + t.getMessage());
                 }
             });
+            return null;
+        }
+    }
+
+    private class GetSingleStudentInfoTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
             return null;
         }
     }

@@ -124,7 +124,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/genderAndMajor"
-        android:text="@string/register"/>
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/register"
+        android:textColor="@color/white"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvStudents"
