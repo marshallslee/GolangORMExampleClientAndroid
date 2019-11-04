@@ -216,9 +216,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                         try {
                             final String strJSON = response.body().string();
                             JSONObject jsonObject = new JSONObject(strJSON);
-                            int httpStatus = jsonObject.getInt(Consts.STATUS);
+                            int statusCode = jsonObject.getInt(Consts.STATUS_CODE);
 
-                            switch(httpStatus) {
+                            switch(statusCode) {
                                 case 200:
                                     JSONArray jsonArray = jsonObject.getJSONArray(Consts.DATA);
                                     if(jsonArray != null && jsonArray.length() != 0) {
@@ -266,14 +266,36 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     private class RegisterTask extends AsyncTask<Student, Void, Void> {
 
         @Override
-        protected Void doInBackground(Student... students) {
+        protected Void doInBackground(Student... args) {
+            final Student newStudent = args[0];
             Client client = new Client(URLs.BASE_URL);
-            Call<ResponseBody> call = client.getApi().addStudent(students[0]);
+            Call<ResponseBody> call = client.getApi().addStudent(newStudent);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    if(response.isSuccessful()) {
+                    if(response.isSuccessful() && response.body() != null) {
+                        try {
+                            final String strJSON = response.body().string();
+                            JSONObject jsonObject = new JSONObject(strJSON);
+                            int statusCode = jsonObject.getInt(Consts.STATUS_CODE);
+                            switch(statusCode) {
+                                case 200:
+                                    students.add(newStudent);
+                                    listStudents();
+                                    break;
 
+                                case 1062:
+                                    Toast.makeText(MainActivity.this, getString(R.string.err_student_number_is_already_taken), Toast.LENGTH_SHORT).show();
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        } catch(JSONException e) {
+                            Log.e(TAG, "JSONException caught: " + e.getMessage());
+                        } catch(IOException e) {
+                            Log.e(TAG, "IOException caught: " + e.getMessage());
+                        }
                     } else {
                         Log.e(TAG, "Response is not successful.");
                     }

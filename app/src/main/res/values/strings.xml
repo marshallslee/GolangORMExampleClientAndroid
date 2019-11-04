@@ -47,5 +47,6 @@
     <string name="register">Register</string>
     <string name="err_student_number_must_contain_numbers_only">Student number must contain numbers only.</string>
     <string name="err_student_number_must_be_9_characters_long">Student number must be 9 characters long.</string>
+    <string name="err_student_number_is_already_taken">A student with the same student number already exists.</string>
     <string name="guide_fill_out_the_required_fields">Please fill out the required fields.</string>
 </resources>
