@@ -1,20 +1,26 @@
 package com.marshallslee.golangormexampleclientandroid;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.marshallslee.golangormexampleclientandroid.adapter.StudentListAdapter;
 import com.marshallslee.golangormexampleclientandroid.api.Client;
@@ -23,6 +29,7 @@ import com.marshallslee.golangormexampleclientandroid.consts.URLs;
 import com.marshallslee.golangormexampleclientandroid.listener.OnItemClickListener;
 import com.marshallslee.golangormexampleclientandroid.listener.OnItemLongClickListener;
 import com.marshallslee.golangormexampleclientandroid.model.Student;
+import com.marshallslee.golangormexampleclientandroid.view.DatePickerSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     private final String TAG = "MainActivity";
     private String firstName, middleName, lastName, studentNumber, gender, major;
     private EditText etFirstName, etMiddleName, etLastName, etStudentNumber;
-    private TextView tvGender, tvMajor;
+    private TextView tvGender, tvMajor, tvDateOfBirth;
     private Button btnRegister;
     private ArrayList<Student> students = new ArrayList<>();
     private RecyclerView rvStudents;
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         etStudentNumber = findViewById(R.id.etStudentNumber);
         tvGender = findViewById(R.id.tvGender);
         tvMajor = findViewById(R.id.tvMajor);
+        tvDateOfBirth = findViewById(R.id.tvDateOfBirth);
         btnRegister = findViewById(R.id.btnRegister);
 
         rvStudents = findViewById(R.id.rvStudents);
@@ -67,6 +75,27 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         rvStudents.addItemDecoration(decoration);
         rvStudents.setLayoutManager(layoutManager);
         rvStudents.setItemAnimator(new DefaultItemAnimator());
+
+        tvGender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        tvMajor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        tvDateOfBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogWithDatePicker();
+            }
+        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
                 if(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(firstName) || TextUtils.isEmpty(firstName) ||
                         TextUtils.isEmpty(firstName) || TextUtils.isEmpty(firstName) || TextUtils.isEmpty(firstName)) {
+                    Toast.makeText(MainActivity.this, getText(R.string.guide_fill_out_the_required_fields), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -87,6 +117,16 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 new RegisterTask().execute(student);
             }
         });
+    }
+
+    private void showDialogWithDatePicker() {
+        DialogFragment fragment = DatePickerSpinner.newInstance(getString(R.string.date_of_birth), new DatePickerSpinner.OnPositiveClickListener() {
+            @Override
+            public void onClick(String date) {
+                tvDateOfBirth.setText(date);
+            }
+        });
+        fragment.show(getSupportFragmentManager(), "DOBDialog");
     }
 
     @Override

@@ -67,7 +67,15 @@
             android:gravity="center"
             android:text="@string/major"
             android:textStyle="bold"
-            android:layout_weight=".8"/>
+            android:layout_weight=".5"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/date_of_birth"
+            android:textStyle="bold"
+            android:layout_weight=".3"/>
 
     </LinearLayout>
 
@@ -89,16 +97,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:layout_weight=".2" />
 
         <TextView
             android:id="@+id/tvMajor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="22sp"
-            android:layout_weight=".8"/>
+            android:textSize="18sp"
+            android:ellipsize="end"
+            android:layout_weight=".5"/>
+
+        <TextView
+            android:id="@+id/tvDateOfBirth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight=".5"/>
 
     </LinearLayout>
 
