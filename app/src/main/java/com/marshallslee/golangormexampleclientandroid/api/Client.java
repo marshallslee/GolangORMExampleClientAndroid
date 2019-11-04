@@ -1,4 +1,4 @@
-package com.marshallslee.golangormexampleclientandroid;
+package com.marshallslee.golangormexampleclientandroid.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

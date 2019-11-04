@@ -1,9 +1,9 @@
-package com.marshallslee.golangormexampleclientandroid;
+package com.marshallslee.golangormexampleclientandroid.model;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public class Student {
+public class Student extends ViewItem {
 
     @Getter
     @Setter
@@ -17,5 +17,10 @@ public class Student {
         this.studentNumber = studentNumber;
         this.gender = gender;
         this.major = major;
+    }
+
+    @Override
+    public int getListItemType() {
+        return 0;
     }
 }
