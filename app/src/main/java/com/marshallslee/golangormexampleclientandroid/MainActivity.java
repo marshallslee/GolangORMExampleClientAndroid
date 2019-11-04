@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         tvMajor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showMajorListDialog();
             }
         });
 
@@ -119,6 +120,26 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         });
     }
 
+    private void showMajorListDialog() {
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice);
+        String[] majors = getResources().getStringArray(R.array.major);
+        for (String s : majors) {
+            arrayAdapter.add(s);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.major));
+        builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String selectedMajor = arrayAdapter.getItem(i);
+                tvMajor.setText(selectedMajor);
+            }
+        });
+
+        builder.show();
+    }
+
     private void showDialogWithDatePicker() {
         DialogFragment fragment = DatePickerSpinner.newInstance(getString(R.string.date_of_birth), new DatePickerSpinner.OnPositiveClickListener() {
             @Override
@@ -134,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         super.onResume();
 
         // student list will be refreshed onResume.
+        rvStudents.removeAllViewsInLayout();
         new LoadStudentsTask().execute();
     }
 
@@ -202,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     }
 
     private void listStudents(ArrayList<Student> students) {
-        rvStudents.removeAllViewsInLayout();
         studentListAdapter = new StudentListAdapter(students, this);
         studentListAdapter.setOnItemClickListener(this);
         rvStudents.setAdapter(studentListAdapter);
